@@ -34,21 +34,22 @@ const Testimonials = () => {
 
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
+  const swiperRef = useRef()
 
   const breakpointsResponsive = {
-    '@0.00': {
+    0: {
       slidesPerView: 1,
       spaceBetween: 10
     },
-    '@0.75': {
+    640: {
       slidesPerView: 2,
       spaceBetween: 20
     },
-    '@1.00': {
+    1040: {
       slidesPerView: 3,
       spaceBetween: 10
     },
-    '@1.50': {
+    1280: {
       slidesPerView: 3,
       spaceBetween: 30
     },
@@ -65,19 +66,19 @@ const Testimonials = () => {
       <div className="z-0 absolute -bottom-20 -right-20 w-[400px] h-[400px] rounded-full bg-linear-to-tr from-yellow-100 to-transparent opacity-40 blur-3xl"></div>
 
       <motion.section
-      initial='hidden'
-      whileInView='visible'
-      viewport={{once: true, margin: '-150px'}}
-      variants={containerVariants}
-      className='px-4 lg:px-0 py-24 lg:py-32 max-w-7xl w-full mx-auto flex flex-col gap-16 lg:gap-28'>
+        initial='hidden'
+        whileInView='visible'
+        viewport={{ once: true, margin: '-150px' }}
+        variants={containerVariants}
+        className='px-4 lg:px-0 py-24 lg:py-32 max-w-7xl w-full mx-auto flex flex-col gap-16 lg:gap-28'>
 
         <div className='flex flex-col justify-center items-center gap-1 lg:gap-4 text-(--text) text-center lg:text-left'>
           <div className="flex flex-wrap items-center justify-center">
             {
               headingWords.map((word, indx) => {
-                const isLastTwo = indx>= lastTwoIndex
+                const isLastTwo = indx >= lastTwoIndex
                 return <motion.h2 variants={blockVariants} key={indx} className={`mr-1.5 text-3xl lg:text-4xl font-medium ${isLastTwo ? 'text-(--primary)' : 'text-(--text)'}`}>{word}</motion.h2>
-                
+
               })
             }
           </div>
@@ -86,11 +87,15 @@ const Testimonials = () => {
 
         <div className='flex flex-col gap-4 w-full'>
           <div className='flex items-center justify-end gap-2'>
-            <button className={`custom-prev p-2 rounded-full bg-(--primary) ${isBeginning ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} disabled={isBeginning}>
+            <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              className={`p-2 rounded-full bg-(--primary) ${isBeginning ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} disabled={isBeginning}>
               <ArrowLeft size={20} color='var(--text)' />
             </button>
 
-            <button className={`custom-next p-2 rounded-full bg-(--primary) ${isEnd ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} disabled={isEnd}>
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              className={`p-2 rounded-full bg-(--primary) ${isEnd ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} disabled={isEnd}>
               <ArrowRight size={20} color='var(--text)' />
             </button>
           </div>
@@ -101,6 +106,10 @@ const Testimonials = () => {
             navigation={{
               nextEl: '.custom-next',
               prevEl: '.custom-prev'
+            }}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper // Store swiper instance
+              handleSwiperEvents(swiper)
             }}
             breakpoints={breakpointsResponsive}
             onInit={handleSwiperEvents}
@@ -122,7 +131,7 @@ const Testimonials = () => {
                       </div>
                     </div>
 
-                    <div className='flex items-center justify-center gap-1 px-2 py-1 rounded bg-yellow-100'>
+                    <div className='flex items-center justify-center gap-1 px-2 py-1 rounded bg-yellow-50/50'>
                       <Star size={15} color='yellow' fill='yellow' />
                       <p className='text-sm text-yellow-500'>{item.rating}</p>
                     </div>

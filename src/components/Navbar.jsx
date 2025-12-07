@@ -40,7 +40,7 @@ const Navbar = () => {
             {
               navItems.map((item, indx) => {
                 return <li key={indx} className='relative group'>
-                  <a className={`${currentMenu == item ? 'text-black' : 'text-gray-500'} transition-all duration-500`} onClick={() => setCurrentMenu(item)} href={'#' + item}>{item}</a>
+                  <a className={`${currentMenu == item ? 'text-black' : 'text-gray-500'} transition-all duration-500`} onClick={() => setCurrentMenu(item)} href={'#' + item === 'home' ? 'top' : item}>{item}</a>
                   <span className={`h-px w-0 absolute left-0 -bottom-1 bg-[#10B981] transition-all duration-500 group-hover:w-full`}></span>
                 </li>
               })
